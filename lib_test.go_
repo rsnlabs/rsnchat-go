@@ -1,0 +1,97 @@
+package rsnchatgo
+
+import (
+	"encoding/json"
+	"net/http"
+	"net/http/httptest"
+	"testing"
+)
+
+func TestNewRsnChat(t *testing.T) {
+	apiKey := "your-api-key"
+	expectedHeaders := map[string]string{"Authorization": "Bearer your-api-key"}
+
+	// Create a test server to mock the API response
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/api/v1/user/validate" {
+			w.WriteHeader(http.StatusOK)
+		} else {
+			t.Errorf("Unexpected API endpoint called: %s", r.URL.Path)
+		}
+	}))
+	defer ts.Close()
+
+	// Create a new RsnChat client
+	// Override the API URL with the test server URL
+	client, err := NewRsnChat(apiKey, ts.URL+"/api/v1/user")
+	if err != nil {
+		t.Errorf("Failed to create RsnChat client: %v", err)
+	}
+
+	// Check the API key and headers
+	if client.APIKey != apiKey {
+		t.Errorf("Unexpected API key: got %s, want %s", client.APIKey, apiKey)
+	}
+	if len(client.Headers) != len(expectedHeaders) {
+		t.Errorf("Unexpected number of headers: got %d, want %d", len(client.Headers), len(expectedHeaders))
+	}
+	for key, value := range expectedHeaders {
+		if client.Headers[key] != value {
+			t.Errorf("Unexpected header value for %s: got %s, want %s", key, client.Headers[key], value)
+		}
+	}
+}
+
+func TestRsnChat_Gpt(t *testing.T) {
+	apiKey := "your-api-key"
+	prompt := "Hello, world!"
+	expectedResponse := &TextResult{
+		Result:  Result{Success: "true"},
+		Message: "This is the GPT response",
+	}
+
+	// Create a test server to mock the API response
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/api/v1/user/gpt" {
+			// Validate the request payload
+			if err := r.ParseForm(); err != nil {
+				t.Errorf("Failed to parse request form: %v", err)
+			}
+			if r.FormValue("prompt") != prompt {
+				t.Errorf("Unexpected prompt value: got %s, want %s", r.FormValue("prompt"), prompt)
+			}
+
+			// Write the mock response
+			w.WriteHeader(http.StatusOK)
+			w.Header().Set("Content-Type", "application/json")
+			if err := json.NewEncoder(w).Encode(expectedResponse); err != nil {
+				t.Errorf("Failed to encode response: %v", err)
+			}
+		} else {
+			t.Errorf("Unexpected API endpoint called: %s", r.URL.Path)
+		}
+	}))
+	defer ts.Close()
+
+	// Create a new RsnChat client
+	client := &RsnChat{
+		APIKey:  apiKey,
+		APIURL:  ts.URL + "/api/v1/user",
+		Headers: map[string]string{"Authorization": "Bearer " + apiKey},
+		Client:  http.DefaultClient,
+	}
+
+	// Send a GPT request
+	response, err := client.gpt(prompt)
+	if err != nil {
+		t.Errorf("Failed to send GPT request: %v", err)
+	}
+
+	// Check the response
+	if response.Success != expectedResponse.Success {
+		t.Errorf("Unexpected success value: got %s, want %s", response.Success, expectedResponse.Success)
+	}
+	if response.Message != expectedResponse.Message {
+		t.Errorf("Unexpected message value: got %s, want %s", response.Message, expectedResponse.Message)
+	}
+}
