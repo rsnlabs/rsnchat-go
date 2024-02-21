@@ -150,88 +150,88 @@ func NewRsnChat(apiKey string, apiURL ...string) (*RsnChat, error) {
 }
 
 // gpt sends a request to the GPT API endpoint.
-func (r *RsnChat) gpt(prompt string) (*TextResult, error) {
+func (r *RsnChat) Gpt(prompt string) (*TextResult, error) {
 	payload := map[string]string{"prompt": prompt}
 	return r.sendRequest("/gpt", payload)
 }
 
 // openchat sends a request to the OpenChat API endpoint.
-func (r *RsnChat) openchat(prompt string) (*TextResult, error) {
+func (r *RsnChat) Openchat(prompt string) (*TextResult, error) {
 	payload := map[string]string{"prompt": prompt}
 	return r.sendRequest("/openchat", payload)
 }
 
 // bard sends a request to the Bard API endpoint.
-func (r *RsnChat) bard(prompt string) (*TextResult, error) {
+func (r *RsnChat) Bard(prompt string) (*TextResult, error) {
 	payload := map[string]string{"prompt": prompt}
 	return r.sendRequest("/bard", payload)
 }
 
 // gemini sends a request to the Gemini API endpoint.
-func (r *RsnChat) gemini(prompt string) (*TextResult, error) {
+func (r *RsnChat) Gemini(prompt string) (*TextResult, error) {
 	payload := map[string]string{"prompt": prompt}
 	return r.sendRequest("/gemini", payload)
 }
 
 // bing sends a request to the Bing API endpoint.
-func (r *RsnChat) bing(prompt string) (*TextResult, error) {
+func (r *RsnChat) Bing(prompt string) (*TextResult, error) {
 	payload := map[string]string{"prompt": prompt}
 	return r.sendRequest("/bing", payload)
 }
 
 // llama sends a request to the Llama API endpoint.
-func (r *RsnChat) llama(prompt string) (*TextResult, error) {
+func (r *RsnChat) Llama(prompt string) (*TextResult, error) {
 	payload := map[string]string{"prompt": prompt}
 	return r.sendRequest("/llama", payload)
 }
 
 // mixtral sends a request to the Mixtral API endpoint.
-func (r *RsnChat) mixtral(prompt string) (*TextResult, error) {
+func (r *RsnChat) Mixtral(prompt string) (*TextResult, error) {
 	payload := map[string]string{"prompt": prompt}
 	return r.sendRequest("/mixtral", payload)
 }
 
 // claude sends a request to the Claude API endpoint.
-func (r *RsnChat) claude(prompt string) (*TextResult, error) {
+func (r *RsnChat) Claude(prompt string) (*TextResult, error) {
 	payload := map[string]string{"prompt": prompt}
 	return r.sendRequest("/claude", payload)
 }
 
 // codellama sends a request to the Codellama API endpoint.
-func (r *RsnChat) codellama(prompt string) (*TextResult, error) {
+func (r *RsnChat) Codellama(prompt string) (*TextResult, error) {
 	payload := map[string]string{"prompt": prompt}
 	return r.sendRequest("/codellama", payload)
 }
 
 // prodia sends a request to the Prodia API endpoint.
-func (r *RsnChat) prodia(prompt string, negativePrompt string, model string) (*Image, error) {
+func (r *RsnChat) Prodia(prompt string, negativePrompt string, model string) (*Image, error) {
 	payload := map[string]string{"prompt": prompt, "negative_prompt": negativePrompt, "model": model}
 	return r.sendImageRequest("/prodia", payload)
 }
 
 // kandinsky sends a request to the Kandinsky API endpoint.
-func (r *RsnChat) kandinsky(prompt string, negativePrompt string) (*Image, error) {
+func (r *RsnChat) Kandinsky(prompt string, negativePrompt string) (*Image, error) {
 	payload := map[string]string{"prompt": prompt, "negative_prompt": negativePrompt}
 	return r.sendImageRequest("/kandinsky", payload)
 }
 
 // absolutebeauty sends a request to the AbsoluteBeauty API endpoint.
-func (r *RsnChat) absolutebeauty(prompt string, negativePrompt string) (*Image, error) {
+func (r *RsnChat) Absolutebeauty(prompt string, negativePrompt string) (*Image, error) {
 	payload := map[string]string{"prompt": prompt, "negative_prompt": negativePrompt}
 	return r.sendImageRequest("/absolutebeauty", payload)
 }
 
-func (r *RsnChat) sdxl(prompt string, negativePrompt string) (*Image, error) {
+func (r *RsnChat) Sdxl(prompt string, negativePrompt string) (*Image, error) {
 	payload := map[string]string{"prompt": prompt, "negative_prompt": negativePrompt}
 	return r.sendImageRequest("/sdxl", payload)
 }
 
-func (r *RsnChat) dalle(prompt string) (*Image, error) {
+func (r *RsnChat) Dalle(prompt string) (*Image, error) {
 	payload := map[string]string{"prompt": prompt}
 	return r.sendImageRequest("/dalle", payload)
 }
 
-func (r *RsnChat) icon(prompt string) (*Image, error) {
+func (r *RsnChat) Icon(prompt string) (*Image, error) {
 	payload := map[string]string{"prompt": prompt}
 	return r.sendImageRequest("/icon", payload)
 }
